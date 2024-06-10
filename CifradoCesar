@@ -50,7 +50,6 @@ public class CifradoCesar {
             escritor.write(contenido);
             System.out.println("Archivo " + nombre + " creado con éxito en: " + archivo.getAbsolutePath());
         } catch (IOException excepcion) {
-            //excepcion.printStackTrace(System.out);
         }
     }
 

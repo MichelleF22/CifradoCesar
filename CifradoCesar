@@ -1,0 +1,85 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class CifradoCesar {
+    private static final List<Character> simbolos = Arrays.asList(
+            '.', ',', '"', ':', '-', '!', '¡', '¿', '?', ' ',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Pedir el nombre del archivo cifrado
+        System.out.println("Bienvenido, introduzca el nombre de su archivo cifrado:");
+        String nombreCifrado = scanner.nextLine();
+
+        // Pedir el nombre del archivo descifrado
+        System.out.println("Introduzca el nombre de su archivo descifrado:");
+        String nombreDescifrado = scanner.nextLine();
+
+        // Pedir el texto para el archivo
+        System.out.println("Introduzca su texto para el archivo:");
+        String texto = scanner.nextLine();
+
+        // Pedir el número de desplazamiento
+        System.out.println("Introduzca el número de desplazamiento de caracteres para su texto:");
+        int desplazamiento = scanner.nextInt();
+
+        // Cifrar y descifrar el texto
+        String textoCifrado = cifrarCesar(texto, desplazamiento);
+        System.out.println("Texto Cifrado: " + textoCifrado);
+
+        String textoDescifrado = descifrarCesar(textoCifrado, desplazamiento);
+        System.out.println("Texto Descifrado: " + textoDescifrado);
+
+        // Crear los archivos y escribir en ellos
+        crearArchivoDeTexto(nombreCifrado, textoCifrado);
+        crearArchivoDeTexto(nombreDescifrado, textoDescifrado);
+    }
+
+    // Crear el archivo y escribir en él
+    public static void crearArchivoDeTexto(String nombre, String contenido) {
+        File archivo = new File(nombre + ".txt");
+        try (FileWriter escritor = new FileWriter(archivo)) {
+            escritor.write(contenido);
+            System.out.println("Archivo " + nombre + " creado con éxito en: " + archivo.getAbsolutePath());
+        } catch (IOException excepcion) {
+            //excepcion.printStackTrace(System.out);
+        }
+    }
+
+    // Método para cifrar y descifrar el texto
+    public static String cifrarCesar(String texto, int desplazamiento) {
+        StringBuilder resultado = new StringBuilder();
+
+        //Recorrer el array para ver que es letra y que es simbolo y cambiarlo
+        for (char c : texto.toCharArray()) {
+            if (simbolos.contains(c)) {
+                c = cifrarSimbolo(c, desplazamiento);
+            }
+            resultado.append(c);
+        }
+        return resultado.toString();
+    }
+
+    // Método para cifrar los símbolos
+    private static char cifrarSimbolo(char simbolo, int desplazamiento) {
+        int indice = simbolos.indexOf(simbolo);
+        int nuevoIndice = (indice + desplazamiento) % simbolos.size();
+        if (nuevoIndice < 0) {
+            nuevoIndice += simbolos.size();
+        }
+        return simbolos.get(nuevoIndice);
+    }
+
+    // Método para descifrar el texto devolviendolo negativo a CifradoCesar
+    public static String descifrarCesar(String texto, int desplazamiento) {
+        return cifrarCesar(texto, -desplazamiento);
+    }
+}

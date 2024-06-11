@@ -49,8 +49,7 @@ public class CifradoCesar {
         try (FileWriter escritor = new FileWriter(archivo)) {
             escritor.write(contenido);
             System.out.println("Archivo " + nombre + " creado con éxito en: " + archivo.getAbsolutePath());
-        } catch (IOException excepcion) {
-        }
+        } catch (IOException excepcion) { }
     }
 
     // Método para cifrar y descifrar el texto
@@ -72,7 +71,7 @@ public class CifradoCesar {
         int indice = simbolos.indexOf(simbolo);
         int nuevoIndice = (indice + desplazamiento) % simbolos.size();
         if (nuevoIndice < 0) {
-            nuevoIndice += simbolos.size();
+            nuevoIndice = nuevoIndice + simbolos.size();
         }
         return simbolos.get(nuevoIndice);
     }
